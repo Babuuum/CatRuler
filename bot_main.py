@@ -17,8 +17,8 @@ import base64
 
 
 def send_message(image):
-    with open(image, 'rb') as file:
-        encoded_image = base64.urlsafe_b64encode(file.read()).decode('utf-8')
+    # with open(image, 'rb') as file:
+    #     encoded_image = base64.urlsafe_b64encode(file.read()).decode('utf-8')
 
     access_token = 'vk1.a.JIYnQvrq1T6lNnl9yP6vBV1tbm3mbH7edMpPb1imtSBHNsJEkHZS1-DUW_cikzOf7x2_e0z9NTYj7TOyqgIn6njQ-AvONKqRL2CZHW0NMUXnCjnxGlZGTcziSdT3YJfazNrWfpuXB8FND-1wXL6SIjEDTYovoJZ0gw75IxJkkewP5xud9neFeJ5K0DFBwCShsghftdVN0G0Svn8T5J2GAQ'
 
@@ -44,12 +44,28 @@ def send_message(image):
         url=url,
         files={
             'file1': (
-                image,
-                open(image, 'rb'),
+                image[0],
+                open(image[0], 'rb'),
                 'multipart/form-data',
-            )
+            ),
+            'file2': (
+                image[1],
+                open(image[1], 'rb'),
+                'multipart/form-data',
+            ),
+            'file3': (
+                image[2],
+                open(image[2], 'rb'),
+                'multipart/form-data',
+            ),
+            'file4': (
+                image[3],
+                open(image[3], 'rb'),
+                'multipart/form-data',
+            ),
         }
     ).json()
+    print(json_response_from_UploadServer)
 
     url = "https://api.vk.com/method/photos.save"
     response = requests.post(
@@ -64,6 +80,7 @@ def send_message(image):
             'hash': json_response_from_UploadServer['hash'],
         }
     )
+    print(response.json())
 
     url = "https://api.vk.com/method/wall.post"
     response = requests.post(
@@ -72,11 +89,14 @@ def send_message(image):
             'access_token': token,
             'from_group': 1,
             'owner_id': f'-{group_id}',
-            'attachments': f'photo-{group_id}_{response.json()["response"][0]["id"]}',
+            'attachments': [f'photo-{group_id}_{response.json()["response"][0]["id"]},'
+                            f'photo-{group_id}_{response.json()["response"][1]["id"]},'
+                            f'photo-{group_id}_{response.json()["response"][2]["id"]},'
+                            f'photo-{group_id}_{response.json()["response"][3]["id"]}'],
             'v': version_vk,
         }
     )
 
-
+    print(response.json())
 
 #https://zenno.pro/kak-poluchit-access-token-prilozheniya-vk-com/ dl9 poly4eni9 tokena
