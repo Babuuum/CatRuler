@@ -10,6 +10,8 @@ def save_image(images):
             file.write(image_data)
         img_list.append(f"folder/generated_image{counter}.png")
         counter += 1
+    # sleeping post: dobavlenie v db
+    # sdelat' naming CatRuller_1-10_2024-09-05, rasfosavat' po papkam
     print(img_list)
     return img_list
 

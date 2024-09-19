@@ -1,6 +1,8 @@
 import requests
 import json
 import time
+import os
+from dotenv import load_dotenv
 
 
 class Text2ImageAPI:
@@ -47,9 +49,16 @@ class Text2ImageAPI:
             attempts -= 1
             time.sleep(delay)
 
+
 def img_creation(prompt):
-    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', '4C32278F0269204483679DB7E4E1C17D',
-                        '218513EA52E81B78F4BD3DCAC78F4967')
+
+    load_dotenv()
+
+    api_key = os.getenv('k_api_key')
+    secret_key = os.getenv('k_secret_key')
+
+    api = Text2ImageAPI('https://api-key.fusionbrain.ai/', api_key,
+                        secret_key)
     model_id = api.get_model()
     uuid = api.generate(prompt, model_id)
     image = api.check_generation(uuid)

@@ -1,32 +1,20 @@
 import requests
-import base64
-# acess_token = 'vk1.a.JIYnQvrq1T6lNnl9yP6vBV1tbm3mbH7edMpPb1imtSBHNsJEkHZS1-DUW_cikzOf7x2_e0z9NTYj7TOyqgIn6njQ-AvONKqRL2CZHW0NMUXnCjnxGlZGTcziSdT3YJfazNrWfpuXB8FND-1wXL6SIjEDTYovoJZ0gw75IxJkkewP5xud9neFeJ5K0DFBwCShsghftdVN0G0Svn8T5J2GAQ'
-# url = 'https://api.vk.com/method/photos.getUploadServer'
-# response_from_getUploadServer = requests.post(
-#     url=url,
-#     params={
-#         'access_token': acess_token,
-#         'group_id': 209710041,
-#         'v': "5.199",
-#         'album_id': 282399639,
-#     }
-# ).json()
-# print(response_from_getUploadServer)
-# test = requests.get('https://id.vk.com/authorize?response_type=code&client_id=52203073scope=groups%20wall%20photos&redirect_uri=https%3A%2F%2FCatRuler.com&state=XXXRandomZZZ&code_challenge=K8KAyQ82WSEncryptedVerifierGYUDj8K&code_challenge_method=s256')
-# print(test.text)
+import os
+from dotenv import load_dotenv
 
 
 def send_message(image):
     # with open(image, 'rb') as file:
     #     encoded_image = base64.urlsafe_b64encode(file.read()).decode('utf-8')
 
-    access_token = 'vk1.a.JIYnQvrq1T6lNnl9yP6vBV1tbm3mbH7edMpPb1imtSBHNsJEkHZS1-DUW_cikzOf7x2_e0z9NTYj7TOyqgIn6njQ-AvONKqRL2CZHW0NMUXnCjnxGlZGTcziSdT3YJfazNrWfpuXB8FND-1wXL6SIjEDTYovoJZ0gw75IxJkkewP5xud9neFeJ5K0DFBwCShsghftdVN0G0Svn8T5J2GAQ'
+    load_dotenv()
 
-    token = '7b68af4d9ed314ac12be15e3f589aff54f604c38012c00f6200ca95af4e877172e9a50e5316cee07729f6'
-    group_id = 209710041
-    group_id_1 = 52203073
-    version_vk = "5.199"
-    album_id = 282399639
+    access_token = os.getenv('vk_access_token')
+    token = os.getenv('vk_token')
+    group_id = os.getenv('vk_group_id')
+    version_vk = os.getenv('version_vk')
+    album_id = os.getenv('vk_album_id')
+    print(access_token, token, group_id, version_vk, album_id)
 
     url = 'https://api.vk.com/method/photos.getUploadServer'
     response_from_getUploadServer = requests.post(

@@ -3,23 +3,26 @@ from datetime import datetime
 
 from prompts import prompt_generation
 from bot_main import send_message
-from Generate_img.multi_img import multi_img
+from Generators.multi_img import multi_img
 from save_img import save_image
 
 if __name__ == '__main__':
     while True:
         current_time = datetime.now().strftime("%H:%M")
-        print(current_time)
         if current_time == "04:00" or current_time == "08:00" or current_time == "16:00" or current_time == "20:00":
+            # v'ebat' fynkciu kotora9 4ekaet poslednii prompt i vrem9
             prompt = prompt_generation()
-            print(prompt)
-            result = multi_img(4, prompt)
+            print('start')
+            result = multi_img(4, prompt[0])
             path = save_image(result)
+            # sleeping post: brat' kartinki i3 db i foldera
             send_message(path)
             time.sleep(3600)
+        elif current_time[-2:] == '00':
+            time.sleep(3600)
+        #sleeping post: elif obshee 4islo kartinok men'she 4em na 10 dnei
         else:
-            time.sleep(1800)
-
+            time.sleep(60)
 
 
 #naiti ra3meri i3obrajenii aktyal'nie dl9 vseh prikolov
@@ -47,7 +50,7 @@ if __name__ == '__main__':
 #v teorii mojno poiskat' neironky, kotora9 vedet kontrol' kaa4estva
 
 #nado vivodit' tegi, vo vrem9 generacii i pyblikovat' ih
-#tak je roflonadpis' v dyhe arta, v stile epohi i3 interesov kota, naprimer po kodeksy bysido, ne ykravshii so stola kolbasy, ne mojet na3ivat's9 samyraem
+#tak je roflonadpis' v dyhe arta, v stile epohi i3 interesov kota, naprimer po kodeksy bysido, ne ykravshii so stola kolbasy, ne mojet na3ivat's9 samyraem, tak je nado prover9t' vsratost' i orfografiu
 #tak je sobirat' laiki i views, i i3 etih laikov formirovat' grafiki po tegam, naprimer vse posti s etim tegom kakoi profit i td
 #mojno dobavit' porody v prompt
 #kak dobrat's9 do 5000 tis94 podpis4ikov, i skol'ko eto bydet stoit'
