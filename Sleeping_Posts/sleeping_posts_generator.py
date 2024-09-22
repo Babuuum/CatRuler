@@ -6,9 +6,10 @@ import base64
 
 from Generators.multi_img import multi_img
 from prompts import prompt_generation
+from Generators.multi_text import multi_text
 
 from Sleeping_Posts.db_core import session
-from Sleeping_Posts.models import Posts, Pictures
+from Sleeping_Posts.models import Posts, Pictures, Texts
 
 from Generators.generate_text_gc import generate_text
 from Generators.generate_text_gemini import generate_text_g
@@ -57,24 +58,34 @@ def sleeping_posts_save(img_counter=10):
 
         img_list = img_generator()
         save_path = dir_creation(base_path, my_date, time_counter)
-        text = generate_text_g(img_list[1][0])
-
-        if text == "Нужно включить vpn":
-            text = generate_text_g(img_list[1][0])
+        text_list = multi_text(3,img_list[1][0])
 
         print(time_counter)
-        print(my_date, save_path, img_list, text)
+        print(my_date, save_path)
 
-        new_post = Posts(date=f"{my_date}_{time_counter}", folder_path=save_path, tags=f"{img_list[1][0]}, {img_list[1][1]}", post_text=text)
+        new_post = Posts(date=f"{my_date}_{time_counter}", folder_path=save_path, tags=f"{img_list[1][0]}, {img_list[1][1]}")
         session.add(new_post)
         # ybrat' cikl pyst' po na3vaniu vi3ivaet fynkciu
+
+        my_post = session.query(Posts).filter_by(folder_path=save_path).first()
+        post_id = my_post.id
+
+        for text in text_list:
+            print(text)
+
+            if text == "Нужно включить vpn":
+                new_text = Texts(post_id=post_id, text=generate_text_g(img_list[1][0]))
+
+            else:
+                new_text = Texts(post_id=post_id, text=text)
+
+            session.add(new_text)
+
 
         for img in img_list[0]:
             img_name = f"CatRuler_{my_date}-{time_counter}_{counter}"
             counter += 1
             img_name = save_base64_image(img, save_path, img_name)
-            my_post = session.query(Posts).filter_by(folder_path=save_path).first()
-            post_id = my_post.id
             new_pic = Pictures(name=img_name, post_id=post_id)
             session.add(new_pic)
         session.commit()
@@ -122,4 +133,4 @@ def save_base64_image(base64_string: str, save_path: str, file_name: str):
 
 
 if __name__ == "__main__":
-    sleeping_posts_save(10)
+    sleeping_posts_save(1)

@@ -6,6 +6,7 @@ from bot_main import send_message
 from Generators.multi_img import multi_img
 from save_img import save_image
 
+
 if __name__ == '__main__':
     while True:
         current_time = datetime.now().strftime("%H:%M")

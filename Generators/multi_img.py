@@ -14,4 +14,5 @@ def multi_img(number, prompt):
             counter += 1
         except:
             time.sleep(300)
+    print(result)
     return result
